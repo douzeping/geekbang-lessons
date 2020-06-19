@@ -52,6 +52,9 @@ public class DependencyLookupDemo {
     private static void lookupByAnnotationType(BeanFactory beanFactory) {
         if (beanFactory instanceof ListableBeanFactory) {
             ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
+            /*
+             * 传入一个 Annotation 获取一个 key 为 bean id | value 为 bean instance 的 map
+             */
             Map<String, User> users = (Map) listableBeanFactory.getBeansWithAnnotation(Super.class);
             System.out.println("查找标注 @Super 所有的 User 集合对象：" + users);
         }
@@ -60,6 +63,9 @@ public class DependencyLookupDemo {
     private static void lookupCollectionByType(BeanFactory beanFactory) {
         if (beanFactory instanceof ListableBeanFactory) {
             ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
+            /*
+             * 传入一个Bean Type获取一个 key 为 bean id | value 为 bean instance 的 map
+             */
             Map<String, User> users = listableBeanFactory.getBeansOfType(User.class);
             System.out.println("查找到的所有的 User 集合对象：" + users);
         }
@@ -70,6 +76,11 @@ public class DependencyLookupDemo {
         System.out.println("实时查找：" + user);
     }
 
+    /**
+     * 实际上是先查到 objectFactory
+     * 当 objectFactory 调用getObject的时候，bean才会加载
+     * @param beanFactory
+     */
     private static void lookupInLazy(BeanFactory beanFactory) {
         ObjectFactory<User> objectFactory = (ObjectFactory<User>) beanFactory.getBean("objectFactory");
         User user = objectFactory.getObject();
